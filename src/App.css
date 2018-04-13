@@ -37,3 +37,7 @@
   color: white;
   background: orange;
 }
+.App-intro {
+  position: absolute;
+  top: 500px;
+}

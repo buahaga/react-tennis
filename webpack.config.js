@@ -8,7 +8,6 @@ let conf = {
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, './build'),
-		//publicPath: 'build/',
 		filename: 'main.js'
 	},
 	devServer: {
@@ -16,10 +15,10 @@ let conf = {
 	},
 	module: {
 		rules: [
-		  {
+			{
 			test: /\.(js|jsx)$/,
-			loader: 'babel-loader',
-			exclude: '/node_modules/'
+			use: ['babel-loader'],
+			exclude: /node_modules/
 		  },
 		  {
 			test: /\.css$/,
