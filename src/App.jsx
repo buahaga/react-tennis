@@ -8,7 +8,6 @@ import Paddle from './components/Paddle.jsx';
 import Ball from './components/Ball.jsx';
 import Score from './components/Score.jsx';
 import './App.css';
-import {subscribeToTimer} from './server/api';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -19,17 +18,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
-
-    subscribeToTimer((err, serverScore) => {
-      this.props.editScore(serverScore);
-    });
-    
   }
 
   componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown);
     this.moveEverything();
-
   }
 
   onKeyDown({ keyCode }) {
