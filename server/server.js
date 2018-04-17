@@ -1,13 +1,21 @@
 const io = require('socket.io')();
 
+let score;
+
 io.on('connection', socket => {
   socket.emit('connected', {id: socket.id});
 
-  console.log('connected');
-
-  socket.on('action', incommingData => {
-    console.log(incommingData);
-    //socket.broadcast.emit('padLeft', incommingData);
+  socket.on('ball', incommingData => {
+    console.log('ball: ' + incommingData);
+    //socket.broadcast.emit('ball_server', incommingData);
+  })
+  socket.on('paddle', incommingData => {
+    console.log('paddle: ' + incommingData);
+    //socket.broadcast.emit('paddle_server', incommingData);
+  })
+  socket.on('score', incommingData => {
+    console.log('score: ' + incommingData);
+    socket.emit('score_server', incommingData);
   })
 })
 

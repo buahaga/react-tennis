@@ -1,8 +1,8 @@
 import { MOVE_BALL } from '../actions/ball.action';
 
 const initState = {
-  ballTop: 0,
-  ballLeft: 0,
+  ballTop: 50,
+  ballLeft: 50,
 };
 
 export default function ballReducer(state = initState, action) {

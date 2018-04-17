@@ -8,7 +8,8 @@
   left: 0px;
   width: 300px;
   height: 400px;
-  background-color: yellow;
+  background-color: lightgrey;
+
 }
 .ball {
   position: absolute;
@@ -17,25 +18,34 @@
   border-radius: 50%;
   background: red;
 }
-.paddle {
+.paddle,
+.enemyPaddle {
   position: absolute;
-  top: 390px;
   width: 100px;
   height: 10px;
   background: blue;
 }
-
+.paddle {
+  top: 390px;
+}
+.enemyPaddle {
+  top: 0px;
+}
 .score {
   position: absolute;
-  top: 300px;
+  top: 50px;
   left: 350px;
-  width: 75px;
-  height: 50px;
-  line-height: 50px;
+  width: 300px;
+  height: 100px;
   padding: 10px;
-  font-size: 50px;
+  font-size: 20px;
   color: white;
   background: orange;
+  border: 3px dotted black;
+}
+.score span {
+  font-size: 50px;
+
 }
 .App-intro {
   position: absolute;

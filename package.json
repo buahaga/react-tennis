@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "dependencies": {
+    "num2fraction": "^1.2.2",
     "react": "^16.3.1",
     "react-auto-binder": "^1.0.1",
     "react-autobind": "^1.0.6",
