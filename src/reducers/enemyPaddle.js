@@ -1,7 +1,7 @@
 import { MOVE_ENEMY_PADDLE } from '../actions/enemyPaddle.action';
 
 const initState = {
-  enemyPadLeft: 50
+  enemyPadLeft: 100
 };
 
 export default function enemyPaddleReducer (state = initState, action) {

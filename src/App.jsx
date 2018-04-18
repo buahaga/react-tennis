@@ -4,13 +4,14 @@ import {moveBall} from './actions/ball.action';
 import {movePaddle} from './actions/paddle.action';
 import {moveEnemyPaddle} from './actions/enemyPaddle.action'
 import {editScore} from './actions/score.action';
+import {confirmConnect} from './actions/connect.action';
+import {waitTillConnection} from './actions/wait.action';
 import Field from './components/Field.jsx';
 import Paddle from './components/Paddle.jsx';
 import Ball from './components/Ball.jsx';
 import Score from './components/Score.jsx';
+import Wait from './components/Wait.jsx';
 import './App.css';
-import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:3005');
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -21,26 +22,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
-    this.socket = socket;
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown);
-    this.moveEverything();
-
-    socket.on('score_server', message => {
-      this.props.editScore(message);
-      console.log(message);
-    });
-    socket.on('ball_server', message => {
-      this.props.moveBall(message);
-    });
-    socket.on('paddle_server', message => {
-      this.props.movePaddle(message);
-    });
+    this.props.confirmConnect();
   }
 
-  onKeyDown({keyCode}) {
+  componentWillReceiveProps (nextProps) {
+    if (this.props.playerConnect !== nextProps.playerConnect) {
+      this.props.waitTillConnection('none');
+      this.moveEverything();
+      document.addEventListener('keydown', this.onKeyDown);
+    }
+  }
+
+  onKeyDown(event) {
+    event.preventDefault();
+
+    const {keyCode} = event;
     const {padLeft} = this.props.paddle;
     const {enemyPadLeft} = this.props.enemy;
     if (keyCode === 39 && padLeft < 200) {
@@ -145,18 +144,27 @@ class App extends Component {
     const {padLeft} = this.props.paddle;
     const {enemyPadLeft} = this.props.enemy;
     const {yourScore} = this.props.score;
+    const {display} = this.props.wait;
     return (<div>
       <Field></Field>
       <Paddle className="enemyPaddle" left={enemyPadLeft}/>
       <Ball top={ballTop} left={ballLeft}/>
       <Paddle className="paddle" left={padLeft}/>
       <Score className="score">{yourScore}</Score>
+      <Wait className="wait" display={display}/>
     </div>);
   }
 }
 
 function mapStateToProps(state) {
-  return {ball: state.ball, paddle: state.paddle, enemy: state.enemyPaddle, score: state.score};
+  return {
+    ball: state.ball,
+    paddle: state.paddle,
+    enemy: state.enemyPaddle,
+    score: state.score,
+    playerConnect: state.connect.connected,
+    wait: state.wait
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -164,7 +172,9 @@ function mapDispatchToProps(dispatch) {
     moveBall: (top, left) => dispatch(moveBall(top, left)),
     movePaddle: (position) => dispatch(movePaddle(position)),
     moveEnemyPaddle: (enemyPosition) => dispatch(moveEnemyPaddle(enemyPosition)),
-    editScore: (score) => dispatch(editScore(score))
+    editScore: (score) => dispatch(editScore(score)),
+    confirmConnect: () => dispatch(confirmConnect()),
+    waitTillConnection: (display) => dispatch(waitTillConnection(display))
   };
 }
 

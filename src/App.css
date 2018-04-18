@@ -45,9 +45,16 @@
 }
 .score span {
   font-size: 50px;
-
 }
-.App-intro {
+.wait {
   position: absolute;
-  top: 500px;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  font-size: 50px;
+  background-color: green;
+  color: white;
 }
