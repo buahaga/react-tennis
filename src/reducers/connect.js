@@ -1,7 +1,7 @@
 import { CONFIRM_CONNECTION } from '../actions/confirmConnection.action';
 
 const initState = {
-  yourID: false
+  playerID: false
 };
 
 export default function connectReducer (state = initState, action) {
@@ -9,7 +9,7 @@ export default function connectReducer (state = initState, action) {
     case CONFIRM_CONNECTION:
       return {
         ...state,
-        yourID: action.yourID
+        playerID: action.playerID
       }
     default:
       return state

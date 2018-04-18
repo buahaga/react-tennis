@@ -11,7 +11,7 @@ io.on('connection', socket => {
 
   socket.on('ball', ballData => {
     socket.emit('ball_server', ballData);
-    //socket.broadcast.emit('ball_server', ballData);
+    socket.broadcast.emit('ball_server', ballData);
   })
   socket.on('score', scoreData => {
     console.log('score: ' + scoreData);

@@ -1,4 +1,4 @@
-import { MOVE_ENEMY_PADDLE_SERVER } from '../actions/enemyPaddle.action';
+import { MOVE_ENEMY_PADDLE_SERVER } from '../actions/enemy.action';
 
 const initState = {
   enemyPadTop: 0,

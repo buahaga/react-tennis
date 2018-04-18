@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {moveBall} from './actions/ball.action';
 import {movePaddle} from './actions/paddle.action';
-import {moveEnemyPaddle} from './actions/enemyPaddle.action'
+import {moveEnemyPaddle} from './actions/enemy.action'
 import {editScore} from './actions/score.action';
 import {playerConnect} from './actions/playerConnect.action';
 import Field from './components/Field.jsx';
@@ -27,9 +27,11 @@ class App extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.yourID !== nextProps.yourID) {
-      this.moveEverything();
+    if (this.props.playerID !== nextProps.playerID) {
       document.addEventListener('keydown', this.onKeyDown);
+      if (nextProps.playerID % 2) {
+        this.moveEverything();
+      }
     }
   }
 
@@ -37,18 +39,24 @@ class App extends Component {
     event.preventDefault();
 
     const {keyCode} = event;
-    const {padLeft} = this.props.paddle;
-    const {enemyPadLeft} = this.props.enemy;
+    const {playerID} = this.props;
+    let padLeft = this.props.paddle.padLeft;
+    let movePaddle = this.props.movePaddle;
 
-    if (keyCode === 39 && padLeft < 200) {
-      this.props.movePaddle(padLeft + 10)
-    } else if (keyCode === 37 && padLeft > 0) {
-      this.props.movePaddle(padLeft - 10);
-    }
-    if (keyCode === 68 && enemyPadLeft < 200) {
-      this.props.moveEnemyPaddle(enemyPadLeft + 10)
-    } else if (keyCode === 65 && enemyPadLeft > 0) {
-      this.props.moveEnemyPaddle(enemyPadLeft - 10);
+    if (playerID % 2) {
+      if (keyCode === 39 && padLeft < 200) {
+        movePaddle(padLeft + 10)
+      } else if (keyCode === 37 && padLeft > 0) {
+        movePaddle(padLeft - 10);
+      }
+    } else {
+      padLeft = this.props.enemy.enemyPadLeft;
+      movePaddle = this.props.moveEnemyPaddle;
+      if (keyCode === 39 && padLeft < 200) {
+        movePaddle(padLeft + 10)
+      } else if (keyCode === 37 && padLeft > 0) {
+        movePaddle(padLeft - 10);
+      }
     }
   }
 
@@ -138,7 +146,7 @@ class App extends Component {
   }
 
   renderWaitingOverlay() {
-    if (!this.props.yourID) {
+    if (!this.props.playerID) {
       return <Wait className="wait"/>;
     } else {
       return null
@@ -167,9 +175,9 @@ function mapStateToProps(state) {
   return {
     ball: state.ball,
     paddle: state.paddle,
-    enemy: state.enemyPaddle,
+    enemy: state.enemy,
     score: state.score,
-    yourID: state.connect.yourID,
+    playerID: state.connect.playerID,
   };
 }
 
