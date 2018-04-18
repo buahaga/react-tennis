@@ -1,4 +1,5 @@
 import React from 'react';
+import './Ball.css';
 
 const ball = (props) => {
   let style = {

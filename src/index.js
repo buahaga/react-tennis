@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import theGame from './reducers/reducers';
-//import middleWare from './middleWare/middleWare';
-//import socketIoMiddleware from 'redux-socket.io-middleware'
 import { customMiddleWare } from './middleWare/middleWare';
 import App from './App.jsx';
 

@@ -1,11 +1,9 @@
 import React from 'react';
+import './Wait.css';
 
 const wait = (props) => {
-  let style = {
-    display: props.display
-  }
   return (
-    <div className={props.className} style={style}>
+    <div className="wait">
       PLEASE WAIT
     </div>
   )

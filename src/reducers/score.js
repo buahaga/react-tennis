@@ -1,4 +1,4 @@
-import { EDIT_SCORE } from '../actions/score.action';
+import { EDIT_SCORE_SERVER } from '../actions/score.action';
 
 const initState = {
   yourScore: 0
@@ -6,7 +6,7 @@ const initState = {
 
 export default function scoreReducer (state = initState, action) {
   switch (action.type) {
-    case EDIT_SCORE:
+    case EDIT_SCORE_SERVER:
       return {
         ...state,
         yourScore: action.value

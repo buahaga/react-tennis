@@ -1,0 +1,15 @@
+.score {
+  position: absolute;
+  top: 50px;
+  left: 350px;
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  font-size: 20px;
+  color: white;
+  background: orange;
+  border: 3px dotted black;
+}
+.score span {
+  font-size: 50px;
+}

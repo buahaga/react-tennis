@@ -1,15 +1,15 @@
-import { CONNECT } from '../actions/connect.action';
+import { CONFIRM_CONNECTION } from '../actions/confirmConnection.action';
 
 const initState = {
-  connected: false
+  yourID: false
 };
 
 export default function connectReducer (state = initState, action) {
   switch (action.type) {
-    case CONNECT:
+    case CONFIRM_CONNECTION:
       return {
         ...state,
-        connected: action.connected
+        yourID: action.yourID
       }
     default:
       return state

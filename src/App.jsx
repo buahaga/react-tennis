@@ -4,14 +4,12 @@ import {moveBall} from './actions/ball.action';
 import {movePaddle} from './actions/paddle.action';
 import {moveEnemyPaddle} from './actions/enemyPaddle.action'
 import {editScore} from './actions/score.action';
-import {confirmConnect} from './actions/connect.action';
-import {waitTillConnection} from './actions/wait.action';
+import {playerConnect} from './actions/playerConnect.action';
 import Field from './components/Field.jsx';
 import Paddle from './components/Paddle.jsx';
 import Ball from './components/Ball.jsx';
 import Score from './components/Score.jsx';
 import Wait from './components/Wait.jsx';
-import './App.css';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -25,12 +23,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.confirmConnect();
+    this.props.playerConnect();
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.playerConnect !== nextProps.playerConnect) {
-      this.props.waitTillConnection('none');
+    if (this.props.yourID !== nextProps.yourID) {
       this.moveEverything();
       document.addEventListener('keydown', this.onKeyDown);
     }
@@ -42,6 +39,7 @@ class App extends Component {
     const {keyCode} = event;
     const {padLeft} = this.props.paddle;
     const {enemyPadLeft} = this.props.enemy;
+
     if (keyCode === 39 && padLeft < 200) {
       this.props.movePaddle(padLeft + 10)
     } else if (keyCode === 37 && padLeft > 0) {
@@ -116,19 +114,19 @@ class App extends Component {
       }
 
       // if (yourScore >= 3) {
-      //   window.alert('First Player Won!');
       //   yourScore = 0;
       //   editScore(yourScore);
-      //   if(!window.confirm('Another Game?')) {
+      //   if(!window.confirm(`FIRST PLAYER WON!
+      //   Another Game?`)) {
       //     return false;
       //   }
       // }
       //
       // if (yourScore <= -3) {
-      //   window.alert('Second Player Won!');
       //   yourScore = 0;
       //   editScore(yourScore);
-      //   if(!window.confirm('Another Game?')) {
+      //   if(!window.confirm(`SECOND PLAYER WON!
+      //   Another Game?`)) {
       //     return false;
       //   }
       // }
@@ -139,20 +137,29 @@ class App extends Component {
     moveFrame();
   }
 
+  renderWaitingOverlay() {
+    if (!this.props.yourID) {
+      return <Wait className="wait"/>;
+    } else {
+      return null
+    }
+  }
+
   render() {
     const {ballTop, ballLeft} = this.props.ball;
-    const {padLeft} = this.props.paddle;
-    const {enemyPadLeft} = this.props.enemy;
+    const {padTop, padLeft} = this.props.paddle;
+    const {enemyPadTop, enemyPadLeft} = this.props.enemy;
     const {yourScore} = this.props.score;
-    const {display} = this.props.wait;
-    return (<div>
-      <Field></Field>
-      <Paddle className="enemyPaddle" left={enemyPadLeft}/>
-      <Ball top={ballTop} left={ballLeft}/>
-      <Paddle className="paddle" left={padLeft}/>
-      <Score className="score">{yourScore}</Score>
-      <Wait className="wait" display={display}/>
-    </div>);
+    return (
+      <div>
+        <Field></Field>
+        <Paddle top={enemyPadTop} left={enemyPadLeft}/>
+        <Ball top={ballTop} left={ballLeft}/>
+        <Paddle top={padTop} left={padLeft}/>
+        <Score>{yourScore}</Score>
+        {this.renderWaitingOverlay()}
+      </div>
+  );
   }
 }
 
@@ -162,8 +169,7 @@ function mapStateToProps(state) {
     paddle: state.paddle,
     enemy: state.enemyPaddle,
     score: state.score,
-    playerConnect: state.connect.connected,
-    wait: state.wait
+    yourID: state.connect.yourID,
   };
 }
 
@@ -173,8 +179,7 @@ function mapDispatchToProps(dispatch) {
     movePaddle: (position) => dispatch(movePaddle(position)),
     moveEnemyPaddle: (enemyPosition) => dispatch(moveEnemyPaddle(enemyPosition)),
     editScore: (score) => dispatch(editScore(score)),
-    confirmConnect: () => dispatch(confirmConnect()),
-    waitTillConnection: (display) => dispatch(waitTillConnection(display))
+    playerConnect: () => dispatch(playerConnect()),
   };
 }
 

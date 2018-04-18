@@ -1,0 +1,13 @@
+.paddle,
+.enemyPaddle {
+  position: absolute;
+  width: 100px;
+  height: 10px;
+  background: blue;
+}
+.paddle {
+  top: 390px;
+}
+.enemyPaddle {
+  top: 0px;
+}

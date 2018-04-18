@@ -1,0 +1,8 @@
+.field {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 300px;
+  height: 400px;
+  background-color: lightgrey;
+}
