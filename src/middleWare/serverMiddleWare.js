@@ -9,14 +9,22 @@ let socket;
 
 export const serverMiddleWare = (store) => (next) => (action) => {
   let type = action.type;
+
   switch (type) {
     case 'PLAYER_CONNECT':
       if (!socket) {
-        socket = openSocket('http://localhost:3001');
+        socket = openSocket('http://localhost:3001/', { query: `room=${action.roomName}` });
+        console.log(action.roomName);
         socket.on('connected', (playerID) => {
           console.log('ThisPlayerID is: ' + playerID);
           store.dispatch(confirmConnect(playerID));
+          socket.emit('room', 'newRoom');
         });
+
+        socket.on('message', message => {
+           console.log('Incoming message:', message);
+        });
+
         socket.on('ball_server', ({top, left}) => {
           store.dispatch(moveBallServer(top, left));
         });

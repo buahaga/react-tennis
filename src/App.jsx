@@ -10,6 +10,7 @@ import Paddle from './components/Paddle.jsx';
 import Ball from './components/Ball.jsx';
 import Score from './components/Score.jsx';
 import Wait from './components/Wait.jsx';
+import Push from './components/Push.jsx';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -23,40 +24,38 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.playerConnect();
+    //let path = window.location.pathname;
+    this.props.playerConnect(this.props.newRoom);
   }
 
   componentWillReceiveProps (nextProps) {
     if (this.props.playerID !== nextProps.playerID) {
       document.addEventListener('keydown', this.onKeyDown);
-      if (nextProps.playerID % 2) {
+      if (!(nextProps.playerID % 2)) {
         this.moveEverything();
       }
     }
   }
 
   onKeyDown(event) {
-    event.preventDefault();
-
     const {keyCode} = event;
     const {playerID} = this.props;
     let padLeft = this.props.paddle.padLeft;
     let movePaddle = this.props.movePaddle;
 
-    if (playerID % 2) {
-      if (keyCode === 39 && padLeft < 200) {
-        movePaddle(padLeft + 10)
-      } else if (keyCode === 37 && padLeft > 0) {
-        movePaddle(padLeft - 10);
-      }
-    } else {
+    if (keyCode === 39 || keyCode === 37) {
+        event.preventDefault();
+    }
+
+    if (playerID % 2 === 0) {
       padLeft = this.props.enemy.enemyPadLeft;
       movePaddle = this.props.moveEnemyPaddle;
-      if (keyCode === 39 && padLeft < 200) {
-        movePaddle(padLeft + 10)
-      } else if (keyCode === 37 && padLeft > 0) {
-        movePaddle(padLeft - 10);
-      }
+    }
+
+    if (keyCode === 39 && padLeft < 200) {
+      movePaddle(padLeft + 10)
+    } else if (keyCode === 37 && padLeft > 0) {
+      movePaddle(padLeft - 10);
     }
   }
 
@@ -158,15 +157,17 @@ class App extends Component {
     const {padTop, padLeft} = this.props.paddle;
     const {enemyPadTop, enemyPadLeft} = this.props.enemy;
     const {yourScore} = this.props.score;
+    const {newRoom} = this.props;
     return (
-      <div>
-        <Field></Field>
-        <Paddle top={enemyPadTop} left={enemyPadLeft}/>
-        <Ball top={ballTop} left={ballLeft}/>
-        <Paddle top={padTop} left={padLeft}/>
-        <Score>{yourScore}</Score>
-        {this.renderWaitingOverlay()}
-      </div>
+    <div>
+      <Field></Field>
+      <Paddle top={enemyPadTop} left={enemyPadLeft}/>
+      <Ball top={ballTop} left={ballLeft}/>
+      <Paddle top={padTop} left={padLeft}/>
+      <Score>{yourScore}</Score>
+      <Push path={newRoom}/>
+      {this.renderWaitingOverlay()}
+    </div>
   );
   }
 }
@@ -178,6 +179,7 @@ function mapStateToProps(state) {
     enemy: state.enemy,
     score: state.score,
     playerID: state.connect.playerID,
+    newRoom: state.ping.roomName
   };
 }
 
@@ -187,7 +189,7 @@ function mapDispatchToProps(dispatch) {
     movePaddle: (position) => dispatch(movePaddle(position)),
     moveEnemyPaddle: (enemyPosition) => dispatch(moveEnemyPaddle(enemyPosition)),
     editScore: (score) => dispatch(editScore(score)),
-    playerConnect: () => dispatch(playerConnect()),
+    playerConnect: (roomName) => dispatch(playerConnect(roomName)),
   };
 }
 

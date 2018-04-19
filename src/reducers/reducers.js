@@ -4,6 +4,7 @@ import paddle from './paddle';
 import enemy from './enemy';
 import score from './score';
 import connect from './connect';
+import ping from './ping';
 
 const theGame = combineReducers({
   paddle,
@@ -11,6 +12,7 @@ const theGame = combineReducers({
   ball,
   score,
   connect,
+  ping
 });
 
 export default theGame;

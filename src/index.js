@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
 import theGame from './reducers/reducers';
 import { serverMiddleWare } from './middleWare/serverMiddleWare';
 import App from './App.jsx';
@@ -13,7 +14,9 @@ let store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+       <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
