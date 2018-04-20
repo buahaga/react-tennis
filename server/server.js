@@ -2,6 +2,8 @@ const io = require('socket.io')();
 const port = 3001;
 const rooms = {};
 
+const playerQuantityByRoom = 2;
+
 io.on('connection', socket => {
   const roomName = socket.handshake.query.room;
   if (!rooms[roomName]) {
@@ -11,6 +13,7 @@ io.on('connection', socket => {
       playerNumber: false
     };
   }
+
   const room = rooms[roomName];
 
   if (!room.mainSocketId) {
@@ -18,7 +21,7 @@ io.on('connection', socket => {
     room.playerNumber = 1;
     room.clients.push(socket.id);
     console.log('firstPlayer go');
-  } else if (room.clients.length === 1) {
+  } else if (room.clients.length < playerQuantityByRoom) {
     room.playerNumber = 2;
     room.clients.push(socket.id);
     console.log('secondPlayer go');
@@ -43,7 +46,11 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
-    room.clients.splice(room.clients.indexOf(socket.id), 1);
+    if (room.clients.indexOf(socket.id) === -1) {
+      throw new Error('something bad whit room.clients array');
+    } else {
+      room.clients.splice(room.clients.indexOf(socket.id), 1);
+    }
     if (socket.id === room.mainSocketId) {
       room.mainSocketId = null;
     }

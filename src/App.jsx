@@ -4,13 +4,12 @@ import {moveBall} from './actions/ball.action';
 import {movePaddle} from './actions/paddle.action';
 import {moveEnemyPaddle} from './actions/enemy.action'
 import {editScore} from './actions/score.action';
-import {playerConnect} from './actions/playerConnect.action';
+import {connecting} from './actions/connect.action';
 import Field from './components/Field.jsx';
 import Paddle from './components/Paddle.jsx';
 import Ball from './components/Ball.jsx';
 import Score from './components/Score.jsx';
 import Wait from './components/Wait.jsx';
-import Push from './components/Push.jsx';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -24,8 +23,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //let path = window.location.pathname;
-    this.props.playerConnect(this.props.newRoom);
+    this.props.connecting(this.props.roomName);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -157,7 +155,6 @@ class App extends Component {
     const {padTop, padLeft} = this.props.paddle;
     const {enemyPadTop, enemyPadLeft} = this.props.enemy;
     const {yourScore} = this.props.score;
-    const {newRoom} = this.props;
     return (
     <div>
       <Field></Field>
@@ -165,7 +162,6 @@ class App extends Component {
       <Ball top={ballTop} left={ballLeft}/>
       <Paddle top={padTop} left={padLeft}/>
       <Score>{yourScore}</Score>
-      <Push path={newRoom}/>
       {this.renderWaitingOverlay()}
     </div>
   );
@@ -179,7 +175,8 @@ function mapStateToProps(state) {
     enemy: state.enemy,
     score: state.score,
     playerID: state.connect.playerID,
-    newRoom: state.ping.roomName
+    roomName: state.connect.roomName,
+    playerName: state.connect.playerName
   };
 }
 
@@ -189,7 +186,7 @@ function mapDispatchToProps(dispatch) {
     movePaddle: (position) => dispatch(movePaddle(position)),
     moveEnemyPaddle: (enemyPosition) => dispatch(moveEnemyPaddle(enemyPosition)),
     editScore: (score) => dispatch(editScore(score)),
-    playerConnect: (roomName) => dispatch(playerConnect(roomName)),
+    connecting: (roomName) => dispatch(connecting(roomName)),
   };
 }
 

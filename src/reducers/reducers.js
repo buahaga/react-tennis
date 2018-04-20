@@ -1,18 +1,16 @@
 import { combineReducers } from 'redux';
-import ball from './ball';
-import paddle from './paddle';
-import enemy from './enemy';
-import score from './score';
-import connect from './connect';
-import ping from './ping';
+import ball from './ball.reducer';
+import paddle from './paddle.reducer';
+import enemy from './enemy.reducer';
+import score from './score.reducer';
+import connect from './connect.reducer';
 
 const theGame = combineReducers({
   paddle,
   enemy,
   ball,
   score,
-  connect,
-  ping
+  connect
 });
 
 export default theGame;

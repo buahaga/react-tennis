@@ -1,0 +1,12 @@
+.login {
+  padding: 20px;
+  margin: 100px;
+  background-color: yellow;
+}
+
+.login input,
+.login button {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 2px;
+}

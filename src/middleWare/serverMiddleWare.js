@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-import {confirmConnect} from '../actions/confirmConnection.action';
+import {connected} from '../actions/connect.action';
 import {moveBallServer} from '../actions/ball.action';
 import {moveEnemyPaddleServer} from '../actions/enemy.action';
 import {movePaddleServer} from '../actions/paddle.action';
@@ -11,13 +11,13 @@ export const serverMiddleWare = (store) => (next) => (action) => {
   let type = action.type;
 
   switch (type) {
-    case 'PLAYER_CONNECT':
+    case 'CONNECTING':
       if (!socket) {
         socket = openSocket('http://localhost:3001/', { query: `room=${action.roomName}` });
-        console.log(action.roomName);
+        console.log('Join me the Room ' + action.roomName);
         socket.on('connected', (playerID) => {
           console.log('ThisPlayerID is: ' + playerID);
-          store.dispatch(confirmConnect(playerID));
+          store.dispatch(connected(playerID));
           socket.emit('room', 'newRoom');
         });
 
