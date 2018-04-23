@@ -20,11 +20,9 @@ io.on('connection', socket => {
     room.mainSocketId = socket.id;
     room.playerNumber = 1;
     room.clients.push(socket.id);
-    console.log('firstPlayer go');
   } else if (room.clients.length < playerQuantityByRoom) {
     room.playerNumber = 2;
     room.clients.push(socket.id);
-    console.log('secondPlayer go');
   } else {
     return;
   }

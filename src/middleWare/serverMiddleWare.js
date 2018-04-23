@@ -8,15 +8,13 @@ import {editScoreServer} from '../actions/score.action';
 let socket;
 
 export const serverMiddleWare = (store) => (next) => (action) => {
-  let type = action.type;
+  const type = action.type;
 
   switch (type) {
     case 'CONNECTING':
       if (!socket) {
         socket = openSocket('http://localhost:3001/', { query: `room=${action.roomName}` });
-        console.log('Join me the Room ' + action.roomName);
         socket.on('connected', (playerID) => {
-          console.log('ThisPlayerID is: ' + playerID);
           store.dispatch(connected(playerID));
           socket.emit('room', 'newRoom');
         });

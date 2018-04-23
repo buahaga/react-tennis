@@ -11,33 +11,29 @@ class Login extends Component {
   }
 
   setAuthorisationData() {
-    let name = document.querySelector('.playerName').value;
-    let room = document.querySelector('.roomName').value;
-    let {roomName} = this.props;
-    this.props.connecting((roomName ? roomName : room), name);
+    const name = document.querySelector('.playerName').value;
+    const room = document.querySelector('.roomName').value;
+    this.props.connecting(room, name);
     sessionStorage.setItem('loginOk', name);
-    //this.props.history.goBack()
+    this.goToTheRoom(room);
   }
 
   setRoomValue() {
-    let {roomName} = this.props;
-    let room = document.querySelector('.roomName');
+    const {roomName} = this.props;
+    const room = document.querySelector('.roomName');
     room.value = roomName;
   }
 
-  goToTheRabbit() {
-    let {roomName} = this.props;
-    window.location.href = roomName;
+  goToTheRoom(room) {
+    this.props.history.push(room);
   }
 
   render () {
-    let {roomName, playerName} = this.props;
-    console.log(playerName + ': in :' + roomName);
     return (
-      <div onLoad={this.setRoomValue.bind(this)} className="login">
+      <div className="login">
         <label>Your Name<input className="playerName" type="text"/></label><br />
         <label>Room Name<input className="roomName" type="text" /></label><br />
-        <button onMouseDown={this.setAuthorisationData.bind(this)} onMouseUp={this.goToTheRabbit.bind(this)}>Submit</button>
+        <button onClick={this.setAuthorisationData.bind(this)}>Submit</button>
       </div>
     )
   }

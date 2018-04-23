@@ -58,7 +58,6 @@ let conf = {
       }),
 	  new ExtractTextPlugin('style.css')
 	]
-	//devtool: 'source-map'
 };
 
 module.exports = (env, options) => {

@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {moveBall} from './actions/ball.action';
-import {movePaddle} from './actions/paddle.action';
-import {moveEnemyPaddle} from './actions/enemy.action'
-import {editScore} from './actions/score.action';
-import {connecting} from './actions/connect.action';
-import Field from './components/Field.jsx';
-import Paddle from './components/Paddle.jsx';
-import Ball from './components/Ball.jsx';
-import Score from './components/Score.jsx';
-import Wait from './components/Wait.jsx';
+import {moveBall} from '../actions/ball.action';
+import {movePaddle} from '../actions/paddle.action';
+import {moveEnemyPaddle} from '../actions/enemy.action'
+import {editScore} from '../actions/score.action';
+import {connecting} from '../actions/connect.action';
+import Field from '../components/Field.jsx';
+import Paddle from '../components/Paddle.jsx';
+import Ball from '../components/Ball.jsx';
+import Score from '../components/Score.jsx';
+import Wait from '../components/Wait.jsx';
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -118,23 +118,23 @@ class App extends Component {
         editScore(++yourScore);
       }
 
-      // if (yourScore >= 3) {
-      //   yourScore = 0;
-      //   editScore(yourScore);
-      //   if(!window.confirm(`FIRST PLAYER WON!
-      //   Another Game?`)) {
-      //     return false;
-      //   }
-      // }
-      //
-      // if (yourScore <= -3) {
-      //   yourScore = 0;
-      //   editScore(yourScore);
-      //   if(!window.confirm(`SECOND PLAYER WON!
-      //   Another Game?`)) {
-      //     return false;
-      //   }
-      // }
+      if (yourScore >= 3) {
+        yourScore = 0;
+        editScore(yourScore);
+        if(!window.confirm(`FIRST PLAYER WON!
+        Another Game?`)) {
+          return false;
+        }
+      }
+
+      if (yourScore <= -3) {
+        yourScore = 0;
+        editScore(yourScore);
+        if(!window.confirm(`SECOND PLAYER WON!
+        Another Game?`)) {
+          return false;
+        }
+      }
 
       moveBall(ballTop - ballRadius, ballLeft - ballRadius);
       requestAnimationFrame(() => moveFrame());
